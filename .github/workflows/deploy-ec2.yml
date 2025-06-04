@@ -32,13 +32,12 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
         script: |
-          cd ~/chapter-performance-dashboard
+          cd ~/chapter-performance-api
           git pull
           npm ci
-          pm2 restart chapter-dashboard || pm2 start src/index.js --name chapter-dashboard
+          pm2 restart mathango || pm2 start src/index.js --name mathango
           
     - name: Send deployment notification
       if: success()
       run: |
         echo "Deployment to EC2 completed successfully!"
-        # Add notification logic here (e.g., Slack, Discord, etc.) 

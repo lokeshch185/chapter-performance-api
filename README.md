@@ -1,42 +1,41 @@
-# Chapter Performance Dashboard API
+# 📊 Chapter Performance Dashboard API
 
 A RESTful API for managing and retrieving chapter performance data for educational purposes.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](http://ec2-xx-xx-xx-xx.compute-1.amazonaws.com)
-[![Video Demo](https://img.shields.io/badge/Video-Demo-red)](https://youtu.be/your-video-id)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](http://13.211.211.145/)
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- Node.js
-- Express.js
-- MongoDB (with Mongoose)
-- Redis Cloud (for caching & rate-limiting)
+- 📦 Node.js
+- 🚀 Express.js
+- 🍃 MongoDB (with Mongoose)
+- 🔄 Redis Cloud (for caching & rate-limiting)
 
-## Features
+## ✨ Features
 
-- RESTful API endpoints for chapter data
-- Filtering and pagination
-- Redis caching for improved performance
-- Rate limiting to prevent abuse
-- Admin-only chapter upload functionality
-- Web UI for testing API endpoints
+- 🔌 RESTful API endpoints for chapter data
+- 🔍 Filtering and pagination
+- ⚡ Redis caching for improved performance
+- 🛡️ Rate limiting to prevent abuse
+- 👑 Admin-only chapter upload functionality
+- 🖥️ Web UI for testing API endpoints
 
-## Setup
+## 🚀 Setup
 
-### Prerequisites
+### 📋 Prerequisites
 
 - Node.js (v14+)
 - MongoDB
 - Redis Cloud account (or local Redis)
 
-### Redis Cloud Setup
+### ☁️ Redis Cloud Setup
 
 1. Sign up for a free Redis Cloud account at [Redis Cloud](https://redis.com/try-free/)
 2. Create a new subscription (free tier)
 3. Create a new database
 4. Get your Redis connection URL (looks like: `redis://username:password@host:port`)
 
-### Installation
+### 📥 Installation
 
 1. Clone the repository
    ```
@@ -58,7 +57,7 @@ A RESTful API for managing and retrieving chapter performance data for education
    NODE_ENV=development
    ```
 
-### Running the Application
+### 🏃‍♂️ Running the Application
 
 Development mode:
 ```
@@ -70,9 +69,9 @@ Production mode:
 npm start
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
-### Get All Chapters
+### 📋 Get All Chapters
 ```
 GET /api/v1/chapters
 ```
@@ -86,12 +85,12 @@ Query Parameters:
 - `page`: Page number (default: 1)
 - `limit`: Number of results per page (default: 10)
 
-### Get Chapter by ID
+### 📖 Get Chapter by ID
 ```
 GET /api/v1/chapters/:id
 ```
 
-### Upload Chapters (Admin only)
+### 📤 Upload Chapters (Admin only)
 ```
 POST /api/v1/chapters
 ```
@@ -102,15 +101,15 @@ Headers:
 Body:
 - Form-data with a file field named "chapters" containing a JSON file
 
-## Rate Limiting
+## ⏱️ Rate Limiting
 
 The API is rate-limited to 30 requests per minute per IP address.
 
-## Caching
+## 💾 Caching
 
 Responses from the `/api/v1/chapters` endpoint are cached for 1 hour to improve performance. The cache is invalidated when new chapters are added.
 
-## Web UI
+## 🖥️ Web UI
 
 A simple web UI is available to test the API endpoints:
 
@@ -123,18 +122,18 @@ The UI provides interfaces for:
 - Getting a chapter by ID
 - Uploading chapters (admin only)
 
-## Deployment
+## 🚀 Deployment
 
-### AWS EC2 Deployment
+### ☁️ AWS EC2 Deployment
 
 The application is deployed on AWS EC2 and can be accessed at:
-[http://ec2-xx-xx-xx-xx.compute-1.amazonaws.com](http://ec2-xx-xx-xx-xx.compute-1.amazonaws.com)
+[http://13.211.211.145/](http://13.211.211.145/)
 
-### Continuous Deployment
+### 🔄 Continuous Deployment
 
 This project uses GitHub Actions for continuous deployment to AWS EC2. When changes are pushed to the main branch, the workflow automatically deploys the updated code to the EC2 instance.
 
-### Deployment Steps (Manual)
+### 📋 Deployment Steps (Manual)
 
 1. Set up an EC2 instance with Node.js, MongoDB, and Git installed
 2. Clone the repository on the EC2 instance
@@ -146,12 +145,7 @@ This project uses GitHub Actions for continuous deployment to AWS EC2. When chan
    pm2 start src/index.js --name chapter-dashboard
    ```
 
-## Video Demonstration
-
-A video demonstration of the application is available at:
-[https://youtu.be/your-video-id](https://youtu.be/your-video-id)
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 .
