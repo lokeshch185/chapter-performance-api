@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Performance Dashboard API Tester</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { max-width: 1200px; margin-top: 30px; }
+        .card { margin-bottom: 20px; }
+        pre { background-color: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto; }
+        .form-group { margin-bottom: 15px; }
+        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .filter-item { flex: 1; min-width: 200px; }
+        .btn-api { margin-right: 10px; margin-bottom: 10px; }
+        #response-container { margin-top: 20px; }
+        .nav-tabs { margin-bottom: 20px; }
+        #file-upload-form { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Chapter Performance Dashboard API Tester</h1>
+        
+        <ul class="nav nav-tabs" id="apiTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="get-all-tab" data-bs-toggle="tab" data-bs-target="#get-all" type="button" role="tab">Get All Chapters</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="get-one-tab" data-bs-toggle="tab" data-bs-target="#get-one" type="button" role="tab">Get Chapter by ID</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab">Upload Chapters</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="apiTabContent">
+            <!-- Get All Chapters Tab -->
+            <div class="tab-pane fade show active" id="get-all" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>GET /api/v1/chapters</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Filters</h6>
+                        <div class="filter-group">
+                            <div class="filter-item">
+                                <label for="subject-filter" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject-filter" placeholder="e.g. Physics">
+                            </div>
+                            <div class="filter-item">
+                                <label for="class-filter" class="form-label">Class</label>
+                                <input type="text" class="form-control" id="class-filter" placeholder="e.g. Class 11">
+                            </div>
+                            <div class="filter-item">
+                                <label for="unit-filter" class="form-label">Unit</label>
+                                <input type="text" class="form-control" id="unit-filter" placeholder="e.g. Mechanics 1">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <div class="filter-item">
+                                <label for="status-filter" class="form-label">Status</label>
+                                <select class="form-select" id="status-filter">
+                                    <option value="">All</option>
+                                    <option value="Not Started">Not Started</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="filter-item">
+                                <label for="weak-chapters-filter" class="form-label">Weak Chapters</label>
+                                <select class="form-select" id="weak-chapters-filter">
+                                    <option value="">All</option>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <div class="filter-item">
+                                <label for="page-filter" class="form-label">Page</label>
+                                <input type="number" class="form-control" id="page-filter" value="1" min="1">
+                            </div>
+                            <div class="filter-item">
+                                <label for="limit-filter" class="form-label">Limit</label>
+                                <input type="number" class="form-control" id="limit-filter" value="10" min="1">
+                            </div>
+                        </div>
+                        <button id="get-all-btn" class="btn btn-primary mt-3">Send Request</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Get Chapter by ID Tab -->
+            <div class="tab-pane fade" id="get-one" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>GET /api/v1/chapters/:id</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="chapter-id" class="form-label">Chapter ID</label>
+                            <input type="text" class="form-control" id="chapter-id" placeholder="Enter chapter ID">
+                        </div>
+                        <button id="get-one-btn" class="btn btn-primary">Send Request</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upload Chapters Tab -->
+            <div class="tab-pane fade" id="upload" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>POST /api/v1/chapters</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="file-upload-form">
+                            <div class="form-group">
+                                <label for="admin-password" class="form-label">Admin Password</label>
+                                <input type="password" class="form-control" id="admin-password" placeholder="Enter admin password">
+                            </div>
+                            <div class="form-group">
+                                <label for="chapters-file" class="form-label">Chapters JSON File</label>
+                                <input type="file" class="form-control" id="chapters-file" accept=".json">
+                            </div>
+                            <button type="submit" id="upload-btn" class="btn btn-primary">Upload</button>
+                        </form>
+                        
+                        <div class="mt-4">
+                            <h6>Sample JSON Format</h6>
+                            <a href="/data.json" class="btn btn-outline-secondary mb-3" download>Download Sample JSON</a>
+                            <pre id="sample-json">[
+  {
+    "subject": "Physics",
+    "chapter": "Mathematics in Physics",
+    "class": "Class 11",
+    "unit": "Mechanics 1",
+    "yearWiseQuestionCount": {
+      "2019": 0,
+      "2020": 2,
+      "2021": 5,
+      "2022": 5,
+      "2023": 3,
+      "2024": 7,
+      "2025": 6
+    },
+    "questionSolved": 0,
+    "status": "Not Started",
+    "isWeakChapter": false
+  }
+]</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Response Container -->
+        <div id="response-container">
+            <h4>Response</h4>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span id="response-status">Status: -</span>
+                    <span id="response-time">Time: -</span>
+                </div>
+                <div class="card-body">
+                    <pre id="response-data">// Response will appear here</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Base URL for API
+            const baseUrl = window.location.origin;
+            
+            // Get All Chapters
+            document.getElementById('get-all-btn').addEventListener('click', async function() {
+                const subject = document.getElementById('subject-filter').value;
+                const className = document.getElementById('class-filter').value;
+                const unit = document.getElementById('unit-filter').value;
+                const status = document.getElementById('status-filter').value;
+                const weakChapters = document.getElementById('weak-chapters-filter').value;
+                const page = document.getElementById('page-filter').value;
+                const limit = document.getElementById('limit-filter').value;
+                
+                // Build query parameters
+                const params = new URLSearchParams();
+                if (subject) params.append('subject', subject);
+                if (className) params.append('class', className);
+                if (unit) params.append('unit', unit);
+                if (status) params.append('status', status);
+                if (weakChapters) params.append('weakChapters', weakChapters);
+                if (page) params.append('page', page);
+                if (limit) params.append('limit', limit);
+                
+                const url = `${baseUrl}/api/v1/chapters${params.toString() ? '?' + params.toString() : ''}`;
+                
+                await fetchAndDisplayResponse(url);
+            });
+            
+            // Get Chapter by ID
+            document.getElementById('get-one-btn').addEventListener('click', async function() {
+                const chapterId = document.getElementById('chapter-id').value.trim();
+                if (!chapterId) {
+                    alert('Please enter a chapter ID');
+                    return;
+                }
+                
+                const url = `${baseUrl}/api/v1/chapters/${chapterId}`;
+                
+                await fetchAndDisplayResponse(url);
+            });
+            
+            // Upload Chapters
+            document.getElementById('file-upload-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const adminPassword = document.getElementById('admin-password').value;
+                const file = document.getElementById('chapters-file').files[0];
+                
+                if (!adminPassword) {
+                    alert('Please enter admin password');
+                    return;
+                }
+                
+                if (!file) {
+                    alert('Please select a JSON file');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('chapters', file);
+                
+                const url = `${baseUrl}/api/v1/chapters`;
+                
+                try {
+                    const startTime = Date.now();
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'admin-password': adminPassword
+                        },
+                        body: formData
+                    });
+                    
+                    const endTime = Date.now();
+                    const responseTime = endTime - startTime;
+                    
+                    const data = await response.json();
+                    
+                    // Display response
+                    document.getElementById('response-status').textContent = `Status: ${response.status} ${response.statusText}`;
+                    document.getElementById('response-time').textContent = `Time: ${responseTime}ms`;
+                    document.getElementById('response-data').textContent = JSON.stringify(data, null, 2);
+                } catch (error) {
+                    document.getElementById('response-status').textContent = 'Status: Error';
+                    document.getElementById('response-time').textContent = 'Time: -';
+                    document.getElementById('response-data').textContent = error.toString();
+                }
+            });
+            
+            // Helper function to fetch and display response
+            async function fetchAndDisplayResponse(url) {
+                try {
+                    const startTime = Date.now();
+                    
+                    const response = await fetch(url);
+                    
+                    const endTime = Date.now();
+                    const responseTime = endTime - startTime;
+                    
+                    const data = await response.json();
+                    
+                    // Display response
+                    document.getElementById('response-status').textContent = `Status: ${response.status} ${response.statusText}`;
+                    document.getElementById('response-time').textContent = `Time: ${responseTime}ms`;
+                    document.getElementById('response-data').textContent = JSON.stringify(data, null, 2);
+                } catch (error) {
+                    document.getElementById('response-status').textContent = 'Status: Error';
+                    document.getElementById('response-time').textContent = 'Time: -';
+                    document.getElementById('response-data').textContent = error.toString();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
